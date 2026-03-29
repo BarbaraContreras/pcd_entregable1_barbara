@@ -158,6 +158,7 @@ class OPERARIO(USUARIO): # Usuario con permisos para gestionar un almacén
         mensaje = f"{self.nombre} ha agregado {r.nombre} al {self.almacenAsignado.nombre}." 
         self.almacenAsignado.catalogo_rep.append(r)  
         print(mensaje)
+        self.actualizar_stock(r.nombre, r._REPUESTOS__cantidad)
     
     def eliminar_rep(self, nombreRep: str): # Eliminar un repuesto del almacén
         repuesto = self.almacenAsignado.buscar_rep(nombreRep)  # Buscar el repuesto
@@ -210,40 +211,36 @@ if __name__ == "__main__":
         operario.listar_reps()
         
         # OPERARIO - Agregar nuevo repuesto
-        print("\n2. OPERARIO AGREGA REPUESTO:")
+        print("\n2. OPERARIO AGREGA REPUESTO Y ACTUALIZA STOCK:")
         blindaje = REPUESTOS("Blindaje", "Merr-Sonn", 40, 12000)
         operario.agregar_rep(blindaje)
-        
-        # OPERARIO - Actualizar stock
-        print("\n3. OPERARIO ACTUALIZA STOCK:")
-        operario.actualizar_stock("Láser", 200)
 
         # OPERARIO - Listar repuestos actualizados
-        print("\n4. OPERARIO LISTA REPUESTOS ACTUALIZADOS:")
+        print("\n3. OPERARIO LISTA REPUESTOS ACTUALIZADOS:")
         operario.listar_reps()
         
         # ALMACÉN - Tiene stock
-        print("\n5. ALMACÉN VERIFICA STOCK:")
+        print("\n4. ALMACÉN VERIFICA STOCK:")
         print(f"¿Hay 100 láseres? {almacen.tiene_stock('Láser', 100)}")
         print(f"¿Hay 300 láseres? {almacen.tiene_stock('Láser', 300)}")
         
         # ALMACÉN - Buscar repuesto
-        print("\n6. ALMACÉN BUSCA REPUESTO:")
+        print("\n5. ALMACÉN BUSCA REPUESTO:")
         rep = almacen.buscar_rep("Motor")
         if rep:
             print(f"Encontrado: {rep.salida()}")
         
         # ALMACÉN - Descontar repuesto
-        print("\n7. ALMACÉN DESCUENTA REPUESTO:")
+        print("\n6. ALMACÉN DESCUENTA REPUESTO:")
         almacen.descontar_rep("Motor", 10)
         print(f"Motor después de descontar: cantidad={motor._REPUESTOS__cantidad}")
         
         # COMANDANTE - Consultar repuestos de nave
-        print("\n8. COMANDANTE CONSULTA CATÁLOGO DE NAVE:")
+        print("\n7. COMANDANTE CONSULTA CATÁLOGO DE NAVE:")
         print(f"Repuestos en {executor.nombre}: {comandante.consultar_rep('')}")
         
         # COMANDANTE - Adquirir repuestos (stock suficiente)
-        print("\n9. COMANDANTE SOLICITA REPUESTOS (stock suficiente):")
+        print("\n8. COMANDANTE SOLICITA REPUESTOS (stock suficiente):")
         try:
             comandante.adquirir_rep("Escudo", 15)  
             almacen.descontar_rep("Escudo", 15)  
@@ -252,14 +249,14 @@ if __name__ == "__main__":
             print(f"Error capturado: {e}")
         
         # OPERARIO - Eliminar repuesto
-        print("\n10. OPERARIO ELIMINA REPUESTO:")
+        print("\n9. OPERARIO ELIMINA REPUESTO:")
         try:
             operario.eliminar_rep("Blindaje")
         except ErrorRepuestoNoEncontrado as e:
             print(f"Error capturado: {e}")
         
         # OPERARIO - Listar final
-        print("\n11. OPERARIO LISTA REPUESTOS FINALES:")
+        print("\n10. OPERARIO LISTA REPUESTOS FINALES:")
         operario.listar_reps()
         
         # EJEMPLOS DE ERRORES
